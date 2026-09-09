@@ -1,4 +1,4 @@
-package com.nohurtcam;
+package com.clearchat;
 
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import net.minecraft.client.Minecraft;
