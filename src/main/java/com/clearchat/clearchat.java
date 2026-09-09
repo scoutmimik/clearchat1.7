@@ -4,7 +4,7 @@ import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import net.minecraft.client.Minecraft;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 
-public class ChatBackgroundRemover {
+public class clearchat {
 
     @SubscribeEvent
     public void onRenderChatBackground(RenderGameOverlayEvent.Pre event) {
