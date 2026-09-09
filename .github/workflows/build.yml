@@ -1,1 +1,36 @@
+name: ClearChat
 
+on:
+  push:
+    branches: [ "main", "master" ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up JDK 8
+        uses: actions/setup-java@v4
+        with:
+          java-version: '8'
+          distribution: 'temurin'
+
+      - name: Setup Gradle Wrapper Manually for 5.6.4
+        run: |
+          curl -sLO https://services.gradle.org/distributions/gradle-5.6.4-bin.zip
+          unzip -q gradle-5.6.4-bin.zip
+          ./gradle-5.6.4/bin/gradle wrapper --gradle-version 5.6.4
+
+      - name: Grant execute permission for gradlew
+        run: chmod +x gradlew || true
+
+      - name: Build with Gradle
+        run: ./gradlew build
+
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: ClearChat1.7-JAR
+          path: 'build/libs/*.jar'
+          if-no-files-found: error
