@@ -4,9 +4,13 @@ import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.ChatLine;
 import net.minecraft.client.gui.GuiNewChat;
+import net.minecraft.util.MathHelper;
 import org.lwjgl.opengl.GL11;
+
 import java.lang.reflect.Field;
+import java.util.List;
 
 @Mod(
    modid = "clearchat",
@@ -38,22 +42,127 @@ public class clearchat {
    }
 
    public static class CustomGuiNewChat extends GuiNewChat {
+      private final Minecraft mc;
+      private static Field chatLinesField;
+      private static Field scrollPosField;
+
+      static {
+         try {
+            chatLinesField = GuiNewChat.class.getDeclaredField("field_146253_i");
+            chatLinesField.setAccessible(true);
+         } catch (Exception e) {
+            try {
+               chatLinesField = GuiNewChat.class.getDeclaredField("chatLines");
+               chatLinesField.setAccessible(true);
+            } catch (Exception ex) {
+               ex.printStackTrace();
+            }
+         }
+
+         try {
+            scrollPosField = GuiNewChat.class.getDeclaredField("scrollPos");
+            scrollPosField.setAccessible(true);
+         } catch (Exception e) {
+            try {
+               scrollPosField = GuiNewChat.class.getDeclaredField("field_146252_h");
+               scrollPosField.setAccessible(true);
+            } catch (Exception ignored) {}
+         }
+      }
+
       public CustomGuiNewChat(Minecraft mcIn) {
          super(mcIn);
+         this.mc = mcIn;
       }
 
       @Override
       public void drawChat(int par1) {
-         // Pred vykreslením chatu zapneme OpenGL blend masku, 
-         // ktorá potlačí vykreslenie plných čiernych štvorcov (pozadia), 
-         // alebo jednoducho necháme prebehnúť super a prepíšeme alfa kanál.
-         // V 1.7.10 najspoľahlivejšie bez chýb prekladača:
-         super.drawChat(par1);
+         if (this.mc.gameSettings.chatVisibility != net.minecraft.entity.player.EntityPlayer.EnumChatVisibility.HIDDEN) {
+            int i = this.getLineCount();
+            boolean flag = false;
+            int j = 0;
+            
+            List chatLines = getChatLinesSafely();
+            int scroll = getScrollPosSafely();
+            
+            if (chatLines != null) {
+               int k = chatLines.size();
+               float f = this.mc.gameSettings.chatOpacity * 0.9F + 0.1F;
+
+               if (k > 0) {
+                  if (this.getChatOpen()) {
+                     flag = true;
+                  }
+
+                  float f1 = this.getChatScale();
+                  int l = MathHelper.ceiling_float_int((float)this.getChatWidth() / f1);
+                  GL11.glPushMatrix();
+                  GL11.glTranslatef(2.0F, 20.0F, 0.0F);
+                  GL11.glScalef(f1, f1, 1.0F);
+
+                  for (int i1 = 0; i1 + scroll < chatLines.size() && i1 < i; ++i1) {
+                     ChatLine chatline = (ChatLine)chatLines.get(i1 + scroll);
+
+                     if (chatline != null) {
+                        int j1 = par1 - chatline.getUpdatedCounter();
+
+                        if (j1 < 200 || flag) {
+                           double d0 = (double)j1 / 200.0D;
+                           d0 = 1.0D - d0;
+                           d0 *= 10.0D;
+                           if (d0 < 0.0D) d0 = 0.0D;
+                           if (d0 > 1.0D) d0 = 1.0D;
+                           d0 *= d0;
+                           int k1 = (int)(255.0D * d0);
+
+                           if (flag) {
+                              k1 = 255;
+                           }
+
+                           k1 = (int)((float)k1 * f);
+                           ++j;
+
+                           if (k1 > 3) {
+                              int l1 = 0;
+                              int i2 = -i1 * 9 - 8;
+                              
+                              // Čierne pozadie (drawRect) je tu úplne vynechané.
+
+                              GL11.glEnable(GL11.GL_BLEND);
+                              String s = chatline.getChatComponent().getFormattedText();
+                              this.mc.fontRenderer.drawStringWithShadow(s, l1, i2 - 8, 16777215 + (k1 << 24));
+                              GL11.glDisable(GL11.GL_ALPHA_TEST);
+                           }
+                        }
+                     }
+                  }
+
+                  GL11.glPopMatrix();
+               }
+            }
+         }
       }
-      
-      @Override
-      public void printChatMessageWithOptionalDeletion(net.minecraft.util.IChatComponent component, int id) {
-         super.printChatMessageWithOptionalDeletion(component, id);
+
+      private List getChatLinesSafely() {
+         try {
+            if (chatLinesField != null) {
+               return (List) chatLinesField.get(this);
+            }
+         } catch (Exception e) {
+            e.printStackTrace();
+         }
+         return null;
+      }
+
+      private int getScrollPosSafely() {
+         try {
+            if (scrollPosField != null) {
+               return scrollPosField.getInt(this);
+            }
+         } catch (Exception e) {
+            e.printStackTrace();
+         }
+         return 0;
       }
    }
 }
