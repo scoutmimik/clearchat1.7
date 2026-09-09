@@ -42,7 +42,6 @@ public class clearchat {
    }
 
    public static class CustomGuiNewChat extends GuiNewChat {
-      private final Minecraft mc;
       private static Field chatLinesField;
       private static Field scrollPosField;
 
@@ -72,12 +71,12 @@ public class clearchat {
 
       public CustomGuiNewChat(Minecraft mcIn) {
          super(mcIn);
-         this.mc = mcIn;
       }
 
       @Override
       public void drawChat(int par1) {
-         if (this.mc.gameSettings.chatVisibility != net.minecraft.entity.player.EntityPlayer.EnumChatVisibility.HIDDEN) {
+         Minecraft mcInstance = Minecraft.getMinecraft();
+         if (mcInstance.gameSettings.chatVisibility != net.minecraft.entity.player.EntityPlayer.EnumChatVisibility.HIDDEN) {
             int i = this.getLineCount();
             boolean flag = false;
             int j = 0;
@@ -87,7 +86,7 @@ public class clearchat {
             
             if (chatLines != null) {
                int k = chatLines.size();
-               float f = this.mc.gameSettings.chatOpacity * 0.9F + 0.1F;
+               float f = mcInstance.gameSettings.chatOpacity * 0.9F + 0.1F;
 
                if (k > 0) {
                   if (this.getChatOpen()) {
@@ -126,11 +125,11 @@ public class clearchat {
                               int l1 = 0;
                               int i2 = -i1 * 9 - 8;
                               
-                              // Čierne pozadie (drawRect) je tu úplne vynechané.
+                              // Pozadie chatu (drawRect) je vynechané, kreslí sa len text.
 
                               GL11.glEnable(GL11.GL_BLEND);
                               String s = chatline.getChatComponent().getFormattedText();
-                              this.mc.fontRenderer.drawStringWithShadow(s, l1, i2 - 8, 16777215 + (k1 << 24));
+                              mcInstance.fontRendererObj.drawStringWithShadow(s, l1, i2 - 8, 16777215 + (k1 << 24));
                               GL11.glDisable(GL11.GL_ALPHA_TEST);
                            }
                         }
