@@ -1,20 +1,52 @@
 package com.clearchat;
 
-import cpw.mods.fml.common.eventhandler.SubscribeEvent;
+import cpw.mods.fml.common.Mod;
+import cpw.mods.fml.common.Mod.EventHandler;
+import cpw.mods.fml.common.event.FMLInitializationEvent;
 import net.minecraft.client.Minecraft;
-import net.minecraftforge.client.event.RenderGameOverlayEvent;
+import net.minecraft.client.gui.GuiNewChat;
+import java.lang.reflect.Field;
 
+@Mod(
+   modid = "clearchat",
+   version = "1.0",
+   acceptedMinecraftVersions = "[1.7.10]",
+   clientSideOnly = true
+)
 public class clearchat {
 
-    @SubscribeEvent
-    public void onRenderChatBackground(RenderGameOverlayEvent.Pre event) {
-        // V 1.7.10 vieme zachytiť chat overlay. 
-        // Ak sa renderuje pozadie chatu, môžeme ho ovplyvniť.
-        if (event.type == RenderGameOverlayEvent.ElementType.CHAT) {
-            // V Minecraft kliente sa chatové pozadie kreslí ako súčasť GuiNewChat.
-            // Úplne najjednoduchší spôsob bez ASM v 1.7.10, ak nechceš komplikácie,
-            // je vynulovať opacitu chatu v nastaveniach Minecraftu priamo počas ticku,
-            // alebo použiť tento event na zrušenie pozadia, pričom text zostane.
-        }
-    }
+   @EventHandler
+   public void init(FMLInitializationEvent event) {
+      try {
+         Minecraft mc = Minecraft.getMinecraft();
+         Field chatField = null;
+         
+         // Nájdenie pole pre chat cez reflexiu (funguje aj po obfuskácii)
+         for (Field f : Minecraft.class.getDeclaredFields()) {
+            if (GuiNewChat.class.isAssignableFrom(f.getType())) {
+               chatField = f;
+               break;
+            }
+         }
+         
+         if (chatField != null) {
+            chatField.setAccessible(true);
+            chatField.set(mc, new CustomGuiNewChat(mc));
+         }
+      } catch (Exception e) {
+         e.printStackTrace();
+      }
+   }
+
+   public static class CustomGuiNewChat extends GuiNewChat {
+      public CustomGuiNewChat(Minecraft mcIn) {
+         super(mcIn);
+      }
+
+      @Override
+      protected void drawRect(int p_73734_1_, int p_73734_2_, int p_73734_3_, int p_73734_4_, int p_73734_5_) {
+         // Úplne zablokuje vykresľovanie obdĺžnika (pozadia) pod chatom, 
+         // pričom samotný text a ostatné prvky zostanú netknuté.
+      }
+   }
 }
