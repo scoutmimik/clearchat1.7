@@ -39,7 +39,6 @@ minecraft {
 }
 
 dependencies {
-    compile 'net.minecraft:launchwrapper:1.12'
 }
 
 jar {
