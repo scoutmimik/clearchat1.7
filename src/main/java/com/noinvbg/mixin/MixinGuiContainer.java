@@ -11,7 +11,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 public abstract class MixinGuiContainer {
 
     @Inject(method = "drawWorldBackground", at = @At("HEAD"), cancellable = true)
-    public.void onDrawWorldBackground(int tint, CallbackInfo ci) {
+    public void onDrawWorldBackground(int tint, CallbackInfo ci) {
         if (Main.noInvBackground) {
             ci.cancel();
         }
