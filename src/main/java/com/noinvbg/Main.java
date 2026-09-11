@@ -2,16 +2,11 @@ package com.noinvbg;
 
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
-import cpw.mods.fml.common.eventhandler.SubscribeEvent;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.client.ClientCommandHandler;
-import net.minecraftforge.client.event.GuiScreenEvent;
-import net.minecraftforge.common.MinecraftForge;
 
 @Mod(
    modid = "noinvbg",
@@ -24,25 +19,7 @@ public class Main {
 
     @Mod.EventHandler
     public void init(FMLInitializationEvent event) {
-        MinecraftForge.EVENT_BUS.register(this);
         ClientCommandHandler.instance.registerCommand(new CommandToggleNoInvBG());
-    }
-
-    @SubscribeEvent
-    public void onGuiInit(GuiScreenEvent.InitGuiEvent.Post event) {
-        // Keď sa otvorí akékoľvek GuiContainer (inventár, truhlica...), nastavíme flag na ne-vykresľovanie stmavenia
-        if (noInvBackground && event.gui instanceof GuiContainer) {
-            // V Minecraft 1.7.10 toto zabráni nakresleniu stmaveného gradientu (drawDefaultBackground)
-            Minecraft.getMinecraft().gameSettings.showDebugInfo = Minecraft.getMinecraft().gameSettings.showDebugInfo;
-        }
-    }
-
-    @SubscribeEvent
-    public void onDrawScreen(GuiScreenEvent.DrawScreenEvent.Pre event) {
-        if (noInvBackground && event.gui instanceof GuiContainer) {
-            // Zakáže vykreslenie stmavenia na pozadí, ale zachová samotný inventár, mriežku a itemy
-            event.gui.mc.entityRenderer.setupOverlayRendering();
-        }
     }
 
     public static class CommandToggleNoInvBG extends CommandBase {
@@ -65,7 +42,7 @@ public class Main {
         public void processCommand(ICommandSender sender, String[] args) {
             noInvBackground = !noInvBackground;
             String status = noInvBackground ? EnumChatFormatting.GREEN + "ZAPNUTÉ" : EnumChatFormatting.RED + "VYPNUTÉ";
-            sender.addChatMessage(new ChatComponentText(EnumChatFormatting.GRAY + "[NoInvBG] " + EnumChatFormatting.WHITE + "Pozadie inventára je teraz " + status));
+            sender.addChatMessage(new ChatComponentText(EnumChatFormatting.GRAY + "[NoInvBG] " + EnumChatFormatting.WHITE + "Pozadie je teraz " + status));
         }
     }
 }
