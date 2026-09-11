@@ -12,7 +12,8 @@ public abstract class MixinGuiScreen {
 
     @Inject(method = "func_146270_b", at = @At("HEAD"), cancellable = true)
     public void onDrawDefaultBackground(CallbackInfo ci) {
-        if (Main.noInvBackground) {
+        // Vypne pozadie všade, okrem obrazovky so zoznamom modov (Mod Menu)
+        if (Main.noInvBackground && !(((Object) this) instanceof cpw.mods.fml.client.GuiModList)) {
             ci.cancel();
         }
     }
