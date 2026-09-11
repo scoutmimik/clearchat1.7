@@ -21,6 +21,7 @@ buildscript {
 }
 
 apply plugin: 'forge'
+apply plugin: 'mixin'
 
 compileJava {
     sourceCompatibility = 1.8
@@ -39,16 +40,25 @@ minecraft {
 }
 
 dependencies {
+    compile('org.spongepowered:mixin:0.7.11-SNAPSHOT') {
+        exclude module: 'launchwrapper'
+        exclude module: 'guava'
+        exclude module: 'gson'
+        exclude module: 'commons-io'
+    }
+}
+
+mixin {
+    add sourceSets.main, "noinvbg.mixins.json"
 }
 
 jar {
     manifest {
         attributes(
-            'FMLCorePlugin': 'com.noinvbg.NoInvBGCoreMod',
+            'TweakClass': 'org.spongepowered.asm.launch.MixinTweaker',
+            'MixinConfigs': 'noinvbg.mixins.json',
             'FMLCorePluginContainsFMLMod': 'true',
             'ForceLoadAsMod': 'true'
         )
     }
 }
-
-
