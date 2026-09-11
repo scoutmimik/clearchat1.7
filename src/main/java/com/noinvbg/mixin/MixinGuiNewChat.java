@@ -9,7 +9,7 @@ import org.spongepowered.asm.mixin.injection.Redirect;
 public abstract class MixinGuiNewChat {
 
     @Redirect(
-        method = "drawChat",
+        method = "func_146230_a",
         at = @At(
             value = "INVOKE",
             target = "Lnet/minecraft/client/gui/GuiNewChat;drawRect(IIIII)V"
@@ -19,6 +19,5 @@ public abstract class MixinGuiNewChat {
         if (!Main.noChatBackground) {
             net.minecraft.client.gui.GuiNewChat.drawRect(startX, startY, endX, endY, color);
         }
-        // Ak je zapnuté, drawRect sa preskočí (pozadie správy sa nakreslí s nulovou viditeľnosťou / nevykreslí sa)
     }
 }
