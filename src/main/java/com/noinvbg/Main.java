@@ -36,7 +36,8 @@ public class Main {
     public void onClientTick(TickEvent.ClientTickEvent event) {
         if (event.phase == TickEvent.Phase.END) {
             Minecraft mc = Minecraft.getMinecraft();
-            if (mc != null && mc.ingameGUI != null && !(mc.ingameGUI.persistantChatGUI instanceof CustomGuiChat)) {
+            // Opravené z mc.ingameGUI.persistantChatGUI na mc.ingameGUI.getChatGUI()
+            if (mc != null && mc.ingameGUI != null && !(mc.ingameGUI.getChatGUI() instanceof CustomGuiChat)) {
                 try {
                     Field field;
                     try {
