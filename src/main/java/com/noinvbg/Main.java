@@ -26,19 +26,18 @@ public class Main {
         ClientCommandHandler.instance.registerCommand(new CommandToggleNoInvBG());
         ClientCommandHandler.instance.registerCommand(new CommandToggleNoChatBG());
 
-        // Bezpečné nahradenie persistantChatGUI pomocou Reflection
+        // Bezpečné nahradenie persistantChatGUI pomocou Reflection (podpora MCP aj SRG)
         try {
-            Field field = GuiIngame.class.getDeclaredField("field_73839_d"); // SRG názov pre persistantChatGUI
+            Field field;
+            try {
+                field = GuiIngame.class.getDeclaredField("persistantChatGUI");
+            } catch (NoSuchFieldException e) {
+                field = GuiIngame.class.getDeclaredField("field_73839_d");
+            }
             field.setAccessible(true);
             field.set(Minecraft.getMinecraft().ingameGUI, new CustomGuiChat(Minecraft.getMinecraft()));
         } catch (Exception e) {
-            try {
-                Field field = GuiIngame.class.getDeclaredField("persistantChatGUI");
-                field.setAccessible(true);
-                field.set(Minecraft.getMinecraft().ingameGUI, new CustomGuiChat(Minecraft.getMinecraft()));
-            } catch (Exception ex) {
-                ex.printStackTrace();
-            }
+            e.printStackTrace();
         }
     }
 
