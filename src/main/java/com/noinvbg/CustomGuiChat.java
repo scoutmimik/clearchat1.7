@@ -20,9 +20,9 @@ public class CustomGuiChat extends GuiNewChat {
     }
 
     @Override
-    public void printChatMessage(int updateCounter) {
+    public void drawChat(int updateCounter) {
         if (this.mc.gameSettings.chatVisibility != EntityPlayer.EnumChatVisibility.HIDDEN) {
-            int lineCount = this.func_146232_i();
+            int lineCount = this.getLineCount();
             boolean isChatOpen = false;
             int j = 0;
 
@@ -33,12 +33,12 @@ public class CustomGuiChat extends GuiNewChat {
             float opacity = this.mc.gameSettings.chatOpacity * 0.9F + 0.1F;
 
             if (totalLines > 0) {
-                if (this.func_146241_e()) {
+                if (this.getChatOpen()) {
                     isChatOpen = true;
                 }
 
-                float scale = this.func_146244_h();
-                int width = MathHelper.ceiling_float_int((float) this.func_146228_f() / scale);
+                float scale = this.getChatScale();
+                int width = MathHelper.ceiling_float_int((float) this.getChatWidth() / scale);
                 GL11.glPushMatrix();
                 GL11.glTranslatef(2.0F, 20.0F, 0.0F);
                 GL11.glScalef(scale, scale, 1.0F);
@@ -75,9 +75,9 @@ public class CustomGuiChat extends GuiNewChat {
                                     drawRect(x, y - 9, x + width + 4, y, alphaInt / 2 << 24);
                                 }
 
-                                String text = line.func_151461_a().func_150254_d();
+                                String text = line.getChatComponent().getFormattedText();
                                 GL11.glEnable(GL11.GL_BLEND);
-                                this.mc.fontRenderer.drawStringWithShadow(text, x, y - 8, 16777215 + (alphaInt << 24));
+                                this.mc.fontRendererObj.drawStringWithShadow(text, x, y - 8, 16777215 + (alphaInt << 24));
                                 GL11.glDisable(GL11.GL_ALPHA_TEST);
                             }
                         }
@@ -85,7 +85,7 @@ public class CustomGuiChat extends GuiNewChat {
                 }
 
                 if (isChatOpen) {
-                    int fontHeight = this.mc.fontRenderer.FONT_HEIGHT;
+                    int fontHeight = this.mc.fontRendererObj.FONT_HEIGHT;
                     GL11.glTranslatef(-3.0F, 0.0F, 0.0F);
                     int totalHeight = totalLines * fontHeight + totalLines;
                     int visibleHeight = j * fontHeight + j;
