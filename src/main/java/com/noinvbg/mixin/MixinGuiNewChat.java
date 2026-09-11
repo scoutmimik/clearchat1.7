@@ -12,12 +12,12 @@ public abstract class MixinGuiNewChat {
         method = "func_146230_a",
         at = @At(
             value = "INVOKE",
-            target = "Lnet/minecraft/client/gui/Gui;drawRect(IIIII)V"
+            target = "Lnet/minecraft/client/gui/Gui;func_73733_a(IIIII)V"
         )
     )
     private void onDrawChatBackground(int startX, int startY, int endX, int endY, int color) {
         if (!Main.noChatBackground) {
-            net.minecraft.client.gui.Gui.drawRect(startX, startY, endX, endY, color);
+            net.minecraft.client.gui.Gui.func_73733_a(startX, startY, endX, endY, color);
         }
     }
 }
