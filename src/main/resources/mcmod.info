@@ -3,7 +3,7 @@
   "modid": "noinvbg",
   "name": "NoInvBG",
   "description": "makes the inventory bg clear",
-  "version": "1.0",
+  "version": "1.0.0",
   "mcversion": "1.7.10",
   "url": "",
   "updateUrl": "",
