@@ -18,12 +18,10 @@ buildscript {
         classpath('com.anatawa12.forge:ForgeGradle:1.2-1.1.+') {
             changing = true
         }
-        classpath 'org.spongepowered:mixingradle:0.6-SNAPSHOT'
     }
 }
 
 apply plugin: 'forge'
-apply plugin: 'org.spongepowered.mixin'
 
 compileJava {
     sourceCompatibility = 1.8
@@ -55,10 +53,6 @@ dependencies {
         exclude module: 'gson'
         exclude module: 'commons-io'
     }
-}
-
-mixin {
-    add sourceSets.main, "noinvbg.mixins.json"
 }
 
 jar {
