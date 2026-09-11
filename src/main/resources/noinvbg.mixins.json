@@ -6,6 +6,7 @@
   "refmap": "noinvbg.refmap.json",
   "mixins": [
     "MixinGuiScreen"
+    "MixinGuiNewChat"
   ],
   "client": [
   ],
