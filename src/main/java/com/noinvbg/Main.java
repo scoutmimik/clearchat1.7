@@ -41,8 +41,8 @@ public class Main {
         @Override
         public void processCommand(ICommandSender sender, String[] args) {
             noInvBackground = !noInvBackground;
-            String status = noInvBackground ? EnumChatFormatting.GREEN + "ZAPNUTÉ" : EnumChatFormatting.RED + "VYPNUTÉ";
-            sender.addChatMessage(new ChatComponentText(EnumChatFormatting.GRAY + "[NoInvBG] " + EnumChatFormatting.WHITE + "Pozadie je teraz " + status));
+            String status = noInvBackground ? EnumChatFormatting.WHITE + "ON" : EnumChatFormatting.WHITE + "OFF";
+            sender.addChatMessage(new ChatComponentText(EnumChatFormatting.GRAY + "[NoInvBG] " + status));
         }
     }
 }
