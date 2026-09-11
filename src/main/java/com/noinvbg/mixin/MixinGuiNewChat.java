@@ -16,7 +16,7 @@ public abstract class MixinGuiNewChat {
         )
     )
     private void onDrawChatBackground(int startX, int startY, int endX, int endY, int color) {
-        if (!Main.noInvBackground) {
+        if (!Main.noChatBackground) {
             net.minecraft.client.gui.GuiNewChat.drawRect(startX, startY, endX, endY, color);
         }
         // Ak je zapnuté, drawRect sa preskočí (pozadie správy sa nakreslí s nulovou viditeľnosťou / nevykreslí sa)
