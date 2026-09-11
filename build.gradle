@@ -44,7 +44,7 @@ dependencies {
 jar {
     manifest {
         attributes(
-            'FMLCorePlugin': 'com.noinvbg.NoInvBGCoreMod',
+            'FMLCorePlugin': 'com.noinvbg.NoInvBGTransformer',
             'FMLCorePluginContainsFMLMod': 'true',
             'ForceLoadAsMod': 'true'
         )
