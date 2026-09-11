@@ -22,28 +22,28 @@ public class CustomGuiChat extends GuiNewChat {
     @Override
     public void printChatMessage(int updateCounter) {
         if (this.mc.gameSettings.chatVisibility != EntityPlayer.EnumChatVisibility.HIDDEN) {
-            int lineCount = this.getLineCount();
+            int lineCount = this.func_146232_i();
             boolean isChatOpen = false;
             int j = 0;
 
-            List<ChatLine> drawnChatLines = getPrivateField("field_146253_i", "drawnChatLines");
+            List<ChatLine> drawnChatLines = getPrivateField("field_146253_i", "field_146253_i");
             if (drawnChatLines == null) return;
 
             int totalLines = drawnChatLines.size();
             float opacity = this.mc.gameSettings.chatOpacity * 0.9F + 0.1F;
 
             if (totalLines > 0) {
-                if (this.getChatOpen()) {
+                if (this.func_146241_e()) {
                     isChatOpen = true;
                 }
 
-                float scale = this.getChatScale();
-                int width = MathHelper.ceiling_float_int((float) this.getChatWidth() / scale);
+                float scale = this.func_146244_h();
+                int width = MathHelper.ceiling_float_int((float) this.func_146228_f() / scale);
                 GL11.glPushMatrix();
                 GL11.glTranslatef(2.0F, 20.0F, 0.0F);
                 GL11.glScalef(scale, scale, 1.0F);
 
-                int scrollPos = getPrivateIntField("scrollPos", "scrollPos");
+                int scrollPos = getPrivateIntField("field_146250_j", "scrollPos");
 
                 for (int i = 0; i + scrollPos < drawnChatLines.size() && i < lineCount; ++i) {
                     ChatLine line = drawnChatLines.get(i + scrollPos);
@@ -75,7 +75,7 @@ public class CustomGuiChat extends GuiNewChat {
                                     drawRect(x, y - 9, x + width + 4, y, alphaInt / 2 << 24);
                                 }
 
-                                String text = line.func_151461_a().getFormattedText();
+                                String text = line.func_151461_a().func_150254_d();
                                 GL11.glEnable(GL11.GL_BLEND);
                                 this.mc.fontRenderer.drawStringWithShadow(text, x, y - 8, 16777215 + (alphaInt << 24));
                                 GL11.glDisable(GL11.GL_ALPHA_TEST);
@@ -94,7 +94,7 @@ public class CustomGuiChat extends GuiNewChat {
 
                     if (totalHeight != visibleHeight) {
                         int alpha = scrollbarY > 0 ? 170 : 96;
-                        boolean isScrolled = getPrivateBooleanField("isScrolled", "isScrolled");
+                        boolean isScrolled = getPrivateBooleanField("field_146251_k", "isScrolled");
                         int color = isScrolled ? 13382451 : 3355562;
 
                         if (!Main.noChatBackground) {
