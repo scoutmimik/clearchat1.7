@@ -1,0 +1,11 @@
+{
+  "required": true,
+  "minVersion": "0.7",
+  "package": "com.noinvbg.mixin",
+  "refmap": "noinvbg.refmap.json",
+  "target": "@env(DEFAULT)",
+  "compatibilityLevel": "JAVA_8",
+  "client": [
+    "MixinGuiContainer"
+  ]
+}
