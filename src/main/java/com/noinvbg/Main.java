@@ -3,11 +3,13 @@ package com.noinvbg;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiIngame;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.client.ClientCommandHandler;
+import java.lang.reflect.Field;
 
 @Mod(
    modid = "noinvbg",
@@ -24,8 +26,20 @@ public class Main {
         ClientCommandHandler.instance.registerCommand(new CommandToggleNoInvBG());
         ClientCommandHandler.instance.registerCommand(new CommandToggleNoChatBG());
 
-        // Nahradenie vanilla chatu vlastnou triedou
-        Minecraft.getMinecraft().ingameGUI.persistantChatGUI = new CustomGuiChat(Minecraft.getMinecraft());
+        // Bezpečné nahradenie persistantChatGUI pomocou Reflection
+        try {
+            Field field = GuiIngame.class.getDeclaredField("field_73839_d"); // SRG názov pre persistantChatGUI
+            field.setAccessible(true);
+            field.set(Minecraft.getMinecraft().ingameGUI, new CustomGuiChat(Minecraft.getMinecraft()));
+        } catch (Exception e) {
+            try {
+                Field field = GuiIngame.class.getDeclaredField("persistantChatGUI");
+                field.setAccessible(true);
+                field.set(Minecraft.getMinecraft().ingameGUI, new CustomGuiChat(Minecraft.getMinecraft()));
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+        }
     }
 
     public static class CommandToggleNoInvBG extends CommandBase {
