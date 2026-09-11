@@ -26,7 +26,7 @@ public class CustomGuiChat extends GuiNewChat {
             boolean isChatOpen = false;
             int j = 0;
 
-            List<ChatLine> drawnChatLines = getPrivateField("field_146253_i", "field_146253_i");
+            List<ChatLine> drawnChatLines = getPrivateField("field_146253_i", "drawnChatLines");
             if (drawnChatLines == null) return;
 
             int totalLines = drawnChatLines.size();
@@ -70,7 +70,6 @@ public class CustomGuiChat extends GuiNewChat {
                                 int x = 0;
                                 int y = -i * 9;
 
-                                // Ak je zapnutý toggle, preskočíme kreslenie pozadia
                                 if (!Main.noChatBackground) {
                                     drawRect(x, y - 9, x + width + 4, y, alphaInt / 2 << 24);
                                 }
