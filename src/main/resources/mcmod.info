@@ -1,8 +1,8 @@
 [
 {
   "modid": "noinvbg",
-  "name": "NoInvBG",
-  "description": "makes the inventory bg clear",
+  "name": "NoBackgroundMod",
+  "description": "makes the background of chat transparent and your inventory background transparent",
   "version": "1.0.0",
   "mcversion": "1.7.10",
   "url": "",
