@@ -16,10 +16,12 @@ import net.minecraftforge.client.ClientCommandHandler;
 public class Main {
 
     public static boolean noInvBackground = true;
+    public static boolean noChatBackground = true;
 
     @Mod.EventHandler
     public void init(FMLInitializationEvent event) {
         ClientCommandHandler.instance.registerCommand(new CommandToggleNoInvBG());
+        ClientCommandHandler.instance.registerCommand(new CommandToggleNoChatBG());
     }
 
     public static class CommandToggleNoInvBG extends CommandBase {
@@ -41,8 +43,32 @@ public class Main {
         @Override
         public void processCommand(ICommandSender sender, String[] args) {
             noInvBackground = !noInvBackground;
-            String status = noInvBackground ? EnumChatFormatting.WHITE + "ON" : EnumChatFormatting.WHITE + "OFF";
-            sender.addChatMessage(new ChatComponentText(EnumChatFormatting.GRAY + "[NoInvBG] " + status));
+            String status = noInvBackground ? EnumChatFormatting.GREEN + "ON" : EnumChatFormatting.RED + "OFF";
+            sender.addChatMessage(new ChatComponentText(EnumChatFormatting.GRAY + "[NoInvBG] Inventory Background: " + status));
+        }
+    }
+
+    public static class CommandToggleNoChatBG extends CommandBase {
+        @Override
+        public String getCommandName() {
+            return "nochatbg";
+        }
+
+        @Override
+        public String getCommandUsage(ICommandSender sender) {
+            return "/nochatbg";
+        }
+
+        @Override
+        public int getRequiredPermissionLevel() {
+            return 0;
+        }
+
+        @Override
+        public void processCommand(ICommandSender sender, String[] args) {
+            noChatBackground = !noChatBackground;
+            String status = noChatBackground ? EnumChatFormatting.GREEN + "ON" : EnumChatFormatting.RED + "OFF";
+            sender.addChatMessage(new ChatComponentText(EnumChatFormatting.GRAY + "[NoChatBG] Chat Background: " + status));
         }
     }
 }
