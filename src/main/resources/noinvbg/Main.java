@@ -1,19 +1,48 @@
-package com.noinvbg.mixin;
+package com.noinvbg;
 
-import com.noinvbg.Main;
-import net.minecraft.client.gui.inventory.GuiContainer;
-import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import cpw.mods.fml.common.Mod;
+import cpw.mods.fml.common.event.FMLInitializationEvent;
+import net.minecraft.command.CommandBase;
+import net.minecraft.command.ICommandSender;
+import net.minecraft.util.ChatComponentText;
+import net.minecraft.util.EnumChatFormatting;
+import net.minecraftforge.client.ClientCommandHandler;
 
-@Mixin(GuiContainer.class)
-public class MixinGuiContainer {
+@Mod(
+   modid = "noinvbg",
+   version = "1.0",
+   acceptedMinecraftVersions = "[1.7.10]"
+)
+public class Main {
 
-    @Inject(method = "drawDefaultBackground", at = @At("HEAD"), cancellable = true)
-    private void onDrawDefaultBackground(CallbackInfo ci) {
-        if (Main.noInvBackground) {
-            ci.cancel();
+    public static boolean noInvBackground = true;
+
+    @Mod.EventHandler
+    public void init(FMLInitializationEvent event) {
+        ClientCommandHandler.instance.registerCommand(new CommandToggleNoInvBG());
+    }
+
+    public static class CommandToggleNoInvBG extends CommandBase {
+        @Override
+        public String getCommandName() {
+            return "noinvbg";
+        }
+
+        @Override
+        public String getCommandUsage(ICommandSender sender) {
+            return "/noinvbg";
+        }
+
+        @Override
+        public int getRequiredPermissionLevel() {
+            return 0;
+        }
+
+        @Override
+        public void processCommand(ICommandSender sender, String[] args) {
+            noInvBackground = !noInvBackground;
+            String status = noInvBackground ? EnumChatFormatting.GREEN + "ZAPNUTÉ" : EnumChatFormatting.RED + "VYPNUTÉ";
+            sender.addChatMessage(new ChatComponentText(EnumChatFormatting.GRAY + "[NoInvBG] " + EnumChatFormatting.WHITE + "Pozadie je teraz " + status));
         }
     }
 }
