@@ -1,9 +1,9 @@
 [
 {
-  "modid": "clearchat",
-  "name": "clearchat",
-  "description": "let your eyes rest",
-  "version": "1.0.0",
+  "modid": "noinvbg",
+  "name": "NoInvBG",
+  "description": "makes the inventory bg clear",
+  "version": "1.0",
   "mcversion": "1.7.10",
   "url": "",
   "updateUrl": "",
