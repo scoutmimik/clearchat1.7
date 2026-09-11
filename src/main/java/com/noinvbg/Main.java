@@ -76,7 +76,7 @@ public class Main {
         public void processCommand(ICommandSender sender, String[] args) {
             noInvBackground = !noInvBackground;
             String status = noInvBackground ? EnumChatFormatting.RED + "OFF" : EnumChatFormatting.GREEN + "ON";
-            sender.addChatMessage(new ChatComponentText(EnumChatFormatting.GRAY + "[NoInvBG] Inventory Background: " + status));
+            sender.addChatMessage(new ChatComponentText(EnumChatFormatting.GRAY + "Inventory Background: " + status));
         }
     }
 
@@ -100,7 +100,7 @@ public class Main {
         public void processCommand(ICommandSender sender, String[] args) {
             noChatBackground = !noChatBackground;
             String status = noChatBackground ? EnumChatFormatting.RED + "OFF" : EnumChatFormatting.GREEN + "ON";
-            sender.addChatMessage(new ChatComponentText(EnumChatFormatting.GRAY + "[NoChatBG] Chat Background: " + status));
+            sender.addChatMessage(new ChatComponentText(EnumChatFormatting.GRAY + "Chat Background: " + status));
         }
     }
 }
