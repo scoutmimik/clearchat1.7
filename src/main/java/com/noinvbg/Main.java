@@ -1,7 +1,10 @@
 package com.noinvbg;
 
+import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
+import cpw.mods.fml.common.eventhandler.SubscribeEvent;
+import cpw.mods.fml.common.gameevent.TickEvent;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiIngame;
 import net.minecraft.command.CommandBase;
@@ -9,6 +12,7 @@ import net.minecraft.command.ICommandSender;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.client.ClientCommandHandler;
+
 import java.lang.reflect.Field;
 
 @Mod(
@@ -25,19 +29,27 @@ public class Main {
     public void init(FMLInitializationEvent event) {
         ClientCommandHandler.instance.registerCommand(new CommandToggleNoInvBG());
         ClientCommandHandler.instance.registerCommand(new CommandToggleNoChatBG());
+        FMLCommonHandler.instance().bus().register(this);
+    }
 
-        // Nahradenie persistantChatGUI s podporou MCP aj SRG názvov
-        try {
-            Field field;
-            try {
-                field = GuiIngame.class.getDeclaredField("persistantChatGUI");
-            } catch (NoSuchFieldException e) {
-                field = GuiIngame.class.getDeclaredField("field_73839_d");
+    @SubscribeEvent
+    public void onClientTick(TickEvent.ClientTickEvent event) {
+        if (event.phase == TickEvent.Phase.END) {
+            Minecraft mc = Minecraft.getMinecraft();
+            if (mc != null && mc.ingameGUI != null && !(mc.ingameGUI.persistantChatGUI instanceof CustomGuiChat)) {
+                try {
+                    Field field;
+                    try {
+                        field = GuiIngame.class.getDeclaredField("persistantChatGUI");
+                    } catch (NoSuchFieldException e) {
+                        field = GuiIngame.class.getDeclaredField("field_73839_d");
+                    }
+                    field.setAccessible(true);
+                    field.set(mc.ingameGUI, new CustomGuiChat(mc));
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
-            field.setAccessible(true);
-            field.set(Minecraft.getMinecraft().ingameGUI, new CustomGuiChat(Minecraft.getMinecraft()));
-        } catch (Exception e) {
-            e.printStackTrace();
         }
     }
 
