@@ -23,6 +23,9 @@ public class Main {
     public void init(FMLInitializationEvent event) {
         ClientCommandHandler.instance.registerCommand(new CommandToggleNoInvBG());
         ClientCommandHandler.instance.registerCommand(new CommandToggleNoChatBG());
+
+        // Nahradenie vanilla chatu vlastnou triedou
+        Minecraft.getMinecraft().ingameGUI.persistantChatGUI = new CustomGuiChat(Minecraft.getMinecraft());
     }
 
     public static class CommandToggleNoInvBG extends CommandBase {
@@ -68,10 +71,6 @@ public class Main {
         @Override
         public void processCommand(ICommandSender sender, String[] args) {
             noChatBackground = !noChatBackground;
-            
-            // Priama úprava priehľadnosti chatu v nastaveniach Minecraftu
-            Minecraft.getMinecraft().gameSettings.chatOpacity = noChatBackground ? 0.0F : 1.0F;
-
             String status = noChatBackground ? EnumChatFormatting.GREEN + "ON" : EnumChatFormatting.RED + "OFF";
             sender.addChatMessage(new ChatComponentText(EnumChatFormatting.GRAY + "[NoChatBG] Chat Background: " + status));
         }
