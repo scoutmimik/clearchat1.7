@@ -30,7 +30,7 @@ compileJava {
 
 version = "1.0.0"
 group = "net.kohi"
-archivesBaseName = "ClearChat"
+archivesBaseName = "NoInvBG"
 
 minecraft {
     version = "1.7.10-10.13.4.1558-1.7.10"
