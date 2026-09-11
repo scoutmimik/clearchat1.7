@@ -12,12 +12,11 @@ import net.minecraftforge.client.ClientCommandHandler;
 import net.minecraftforge.client.event.GuiScreenEvent;
 import net.minecraftforge.common.MinecraftForge;
 
-@Mod(modid = Main.MODID, name = Main.NAME, version = Main.VERSION)
-public class Main {
-    public static final String MODID = "noinvbg";
-    public static final String NAME = "NoInvBG";
-    public static final String VERSION = "1.0.0"; // Zjednotené s build.gradle
-
+@Mod(
+   modid = "noinvbg",
+   version = "1.0",
+   acceptedMinecraftVersions = "[1.7.10]"
+)
     public static boolean noInvBackground = true;
 
     @Mod.EventHandler
