@@ -59,12 +59,12 @@ public class Main {
     public static class CommandToggleNoInvBG extends CommandBase {
         @Override
         public String getCommandName() {
-            return "noinvbg";
+            return "invbg";
         }
 
         @Override
         public String getCommandUsage(ICommandSender sender) {
-            return "/noinvbg";
+            return "/invbg";
         }
 
         @Override
@@ -75,7 +75,7 @@ public class Main {
         @Override
         public void processCommand(ICommandSender sender, String[] args) {
             noInvBackground = !noInvBackground;
-            String status = noInvBackground ? EnumChatFormatting.GREEN + "ON" : EnumChatFormatting.RED + "OFF";
+            String status = noInvBackground ? EnumChatFormatting.RED + "OFF" : EnumChatFormatting.GREEN + "ON";
             sender.addChatMessage(new ChatComponentText(EnumChatFormatting.GRAY + "[NoInvBG] Inventory Background: " + status));
         }
     }
@@ -83,12 +83,12 @@ public class Main {
     public static class CommandToggleNoChatBG extends CommandBase {
         @Override
         public String getCommandName() {
-            return "nochatbg";
+            return "chatbg";
         }
 
         @Override
         public String getCommandUsage(ICommandSender sender) {
-            return "/nochatbg";
+            return "/chatbg";
         }
 
         @Override
@@ -99,7 +99,7 @@ public class Main {
         @Override
         public void processCommand(ICommandSender sender, String[] args) {
             noChatBackground = !noChatBackground;
-            String status = noChatBackground ? EnumChatFormatting.GREEN + "ON" : EnumChatFormatting.RED + "OFF";
+            String status = noChatBackground ? EnumChatFormatting.RED + "OFF" : EnumChatFormatting.GREEN + "ON";
             sender.addChatMessage(new ChatComponentText(EnumChatFormatting.GRAY + "[NoChatBG] Chat Background: " + status));
         }
     }
