@@ -39,12 +39,13 @@ minecraft {
 }
 
 dependencies {
+    compile 'net.minecraft:launchwrapper:1.12'
 }
 
 jar {
     manifest {
         attributes(
-            'FMLCorePlugin': 'com.noinvbg.NoInvBGTransformer',
+            'FMLCorePlugin': 'com.noinvbg.NoInvBGCoreMod',
             'FMLCorePluginContainsFMLMod': 'true',
             'ForceLoadAsMod': 'true'
         )
