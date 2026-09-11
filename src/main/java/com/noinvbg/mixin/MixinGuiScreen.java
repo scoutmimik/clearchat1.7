@@ -11,7 +11,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 public abstract class MixinGuiScreen {
 
     @Inject(method = "func_146270_b", at = @At("HEAD"), cancellable = true)
-    public void onDefaultBackground(CallbackInfo ci) {
+    public void onDrawDefaultBackground(CallbackInfo ci) {
         if (Main.noInvBackground) {
             ci.cancel();
         }
