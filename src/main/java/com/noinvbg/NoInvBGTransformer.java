@@ -14,22 +14,19 @@ public class NoInvBGTransformer implements IClassTransformer {
             return null;
         }
 
-        if (transformedName.equals("net.minecraft.client.gui.inventory.GuiContainer")) {
+        if ("net.minecraft.client.gui.inventory.GuiContainer".equals(transformedName)) {
             ClassReader reader = new ClassReader(basicClass);
             ClassNode node = new ClassNode();
             reader.accept(node, 0);
 
             for (MethodNode method : node.methods) {
-                // Hľadáme metódu drawScreen (desc: (IIF)V)
-                if (method.desc.equals("(IIF)V")) {
+                if ("(IIF)V".equals(method.desc)) {
                     InsnList newInstructions = new InsnList();
 
                     for (AbstractInsnNode insn : method.instructions.toArray()) {
                         if (insn instanceof MethodInsnNode) {
                             MethodInsnNode mInsn = (MethodInsnNode) insn;
-                            // Odchytenie volania drawDefaultBackground (Obf: func_146269_k / Deobf: drawDefaultBackground)
-                            if (mInsn.name.equals("drawDefaultBackground") || mInsn.name.equals("func_146269_k")) {
-                                // Nahradenie volaním podmienenej metódy
+                            if ("drawDefaultBackground".equals(mInsn.name) || "func_146269_k".equals(mInsn.name)) {
                                 newInstructions.add(new MethodInsnNode(
                                     Opcodes.INVOKESTATIC,
                                     "com/noinvbg/NoInvBGTransformer",
