@@ -26,7 +26,7 @@ public class Main {
         ClientCommandHandler.instance.registerCommand(new CommandToggleNoInvBG());
         ClientCommandHandler.instance.registerCommand(new CommandToggleNoChatBG());
 
-        // Bezpečné nahradenie persistantChatGUI pomocou Reflection (podpora MCP aj SRG)
+        // Nahradenie persistantChatGUI s podporou MCP aj SRG názvov
         try {
             Field field;
             try {
