@@ -3,12 +3,10 @@
   "minVersion": "0.8",
   "package": "com.noinvbg.mixin",
   "compatibilityLevel": "JAVA_8",
-  "refmap": "noinvbg.refmap.json",
-  "mixins": [
+  "mixins": [],
+  "client": [
     "MixinGuiScreen",
     "MixinGuiNewChat"
-  ],
-  "client": [
   ],
   "injectors": {
     "defaultRequire": 1
