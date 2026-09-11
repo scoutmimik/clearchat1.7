@@ -30,7 +30,8 @@ public class Main {
     @SubscribeEvent
     public void onDrawScreen(GuiScreenEvent.DrawScreenEvent.Pre event) {
         if (noInvBackground && event != null && event.gui instanceof GuiContainer) {
-            event.setCanceled(true);
+            // Vypne iba stmavené pozadie (gradient) za otvoreným inventárom
+            event.gui.drawWorldBackground(0);
         }
     }
 
