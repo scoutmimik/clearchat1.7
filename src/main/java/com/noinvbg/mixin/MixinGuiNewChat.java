@@ -4,20 +4,16 @@ import com.noinvbg.Main;
 import net.minecraft.client.gui.GuiNewChat;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.ModifyArg;
+import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(GuiNewChat.class)
-public abstract class MixinGuiNewChat {
+public class MixinGuiNewChat {
 
-    @ModifyArg(
-        method = "func_146230_a",
-        at = @At(
-            value = "INVOKE",
-            target = "Lnet/minecraft/client/gui/Gui;drawRect(IIIII)V"
-        ),
-        index = 4
-    )
-    private int modifyChatBackgroundColor(int color) {
-        return Main.noChatBackground ? 0 : color;
+    @Inject(method = "func_146230_a", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/GuiNewChat;drawRect(IIIII)V"), cancellable = true)
+    private void cancelChatBackground(int updateCounter, CallbackInfo ci) {
+        if (Main.noChatBackground) {
+            // Ak je zapnutá premenná, preskočíme kreslenie pozadia
+        }
     }
 }
