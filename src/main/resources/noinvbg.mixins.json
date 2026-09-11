@@ -5,8 +5,7 @@
   "compatibilityLevel": "JAVA_8",
   "mixins": [],
   "client": [
-    "MixinGuiScreen",
-    "MixinGuiNewChat"
+    "MixinGuiScreen"
   ],
   "injectors": {
     "defaultRequire": 1
