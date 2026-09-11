@@ -17,6 +17,8 @@ import net.minecraftforge.common.MinecraftForge;
    version = "1.0",
    acceptedMinecraftVersions = "[1.7.10]"
 )
+public class Main {
+
     public static boolean noInvBackground = true;
 
     @Mod.EventHandler
@@ -27,7 +29,6 @@ import net.minecraftforge.common.MinecraftForge;
 
     @SubscribeEvent
     public void onBackgroundDraw(GuiScreenEvent.BackgroundDrawnEvent.Pre event) {
-        // Kontrola null zabráni skrytej NullPointerException
         if (noInvBackground && event != null && event.gui instanceof GuiContainer) {
             event.setCanceled(true);
         }
