@@ -28,7 +28,7 @@ public class Main {
     }
 
     @SubscribeEvent
-    public void onBackgroundDraw(GuiScreenEvent.BackgroundDrawnEvent.Pre event) {
+    public void onDrawScreen(GuiScreenEvent.DrawScreenEvent.Pre event) {
         if (noInvBackground && event != null && event.gui instanceof GuiContainer) {
             event.setCanceled(true);
         }
