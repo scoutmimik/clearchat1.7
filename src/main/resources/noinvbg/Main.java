@@ -16,7 +16,7 @@ import net.minecraftforge.common.MinecraftForge;
 public class Main {
     public static final String MODID = "noinvbg";
     public static final String NAME = "NoInvBG";
-    public static final String VERSION = "1.0";
+    public static final String VERSION = "1.0.0"; // Zjednotené s build.gradle
 
     public static boolean noInvBackground = true;
 
@@ -28,7 +28,8 @@ public class Main {
 
     @SubscribeEvent
     public void onBackgroundDraw(GuiScreenEvent.BackgroundDrawnEvent.Pre event) {
-        if (noInvBackground && event.gui instanceof GuiContainer) {
+        // Kontrola null zabráni skrytej NullPointerException
+        if (noInvBackground && event != null && event.gui instanceof GuiContainer) {
             event.setCanceled(true);
         }
     }
