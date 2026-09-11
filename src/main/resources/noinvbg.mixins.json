@@ -5,7 +5,7 @@
   "compatibilityLevel": "JAVA_8",
   "refmap": "noinvbg.refmap.json",
   "mixins": [
-    "MixinGuiScreen"
+    "MixinGuiScreen",
     "MixinGuiNewChat"
   ],
   "client": [
