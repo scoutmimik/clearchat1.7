@@ -7,6 +7,7 @@ import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.TickEvent;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiIngame;
+import net.minecraft.client.gui.GuiNewChat;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.util.ChatComponentText;
@@ -36,17 +37,18 @@ public class Main {
     public void onClientTick(TickEvent.ClientTickEvent event) {
         if (event.phase == TickEvent.Phase.END) {
             Minecraft mc = Minecraft.getMinecraft();
-            // Opravené z mc.ingameGUI.persistantChatGUI na mc.ingameGUI.getChatGUI()
+            
+            // Opravená podmienka z 'persistantChatGUI' na 'getChatGUI()'
             if (mc != null && mc.ingameGUI != null && !(mc.ingameGUI.getChatGUI() instanceof CustomGuiChat)) {
                 try {
-                    Field field;
-                    try {
-                        field = GuiIngame.class.getDeclaredField("persistantChatGUI");
-                    } catch (NoSuchFieldException e) {
-                        field = GuiIngame.class.getDeclaredField("field_73839_d");
+                    // Dynamické hľadanie poľa podľa typu, ignoruje MCP/SRG názvy
+                    for (Field field : GuiIngame.class.getDeclaredFields()) {
+                        if (field.getType() == GuiNewChat.class) {
+                            field.setAccessible(true);
+                            field.set(mc.ingameGUI, new CustomGuiChat(mc));
+                            break;
+                        }
                     }
-                    field.setAccessible(true);
-                    field.set(mc.ingameGUI, new CustomGuiChat(mc));
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
