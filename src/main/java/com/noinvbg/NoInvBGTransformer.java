@@ -20,13 +20,21 @@ public class NoInvBGTransformer implements IClassTransformer {
             reader.accept(node, 0);
 
             for (MethodNode method : node.methods) {
+                // drawScreen má deskriptor (IIF)V
                 if ("(IIF)V".equals(method.desc)) {
                     InsnList newInstructions = new InsnList();
 
                     for (AbstractInsnNode insn : method.instructions.toArray()) {
                         if (insn instanceof MethodInsnNode) {
                             MethodInsnNode mInsn = (MethodInsnNode) insn;
-                            if ("drawDefaultBackground".equals(mInsn.name) || "func_146269_k".equals(mInsn.name)) {
+                            
+                            // Kontrola všetkých možných názvov drawDefaultBackground v 1.7.10
+                            boolean isBgMethod = "drawDefaultBackground".equals(mInsn.name) 
+                                              || "func_146269_k".equals(mInsn.name) 
+                                              || "c".equals(mInsn.name);
+
+                            if (isBgMethod) {
+                                newInstructions.add(new VarInsnNode(Opcodes.ALOAD, 0));
                                 newInstructions.add(new MethodInsnNode(
                                     Opcodes.INVOKESTATIC,
                                     "com/noinvbg/NoInvBGTransformer",
